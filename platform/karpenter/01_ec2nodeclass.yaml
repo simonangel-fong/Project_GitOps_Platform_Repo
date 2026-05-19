@@ -5,14 +5,14 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
 spec:
-  role: CHANGE_ME
+  role: gitops-demo-dev
   amiSelectorTerms:
     - alias: bottlerocket@latest
   subnetSelectorTerms:
     - tags:
-        karpenter.sh/discovery: CHANGE_ME
+        karpenter.sh/discovery: gitops-demo-dev
   securityGroupSelectorTerms:
     - tags:
-        karpenter.sh/discovery: CHANGE_ME
+        karpenter.sh/discovery: gitops-demo-dev
   tags:
-    karpenter.sh/discovery: CHANGE_ME
+    karpenter.sh/discovery: gitops-demo-dev
