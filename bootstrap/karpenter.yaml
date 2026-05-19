@@ -1,4 +1,5 @@
 # bootstrap/karpenter.yaml
+# Installs the Karpenter controller via Helm (OCI chart).
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -6,16 +7,35 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   source:
-    repoURL: https://github.com/simonangel-fong/Project_GitOps_Platform_Repo.git
-    targetRevision: main
-    path: platform/karpenter
-    directory:
-      recurse: false
+    repoURL: public.ecr.aws/karpenter
+    chart: karpenter
+    targetRevision: 1.0.6
+    helm:
+      releaseName: karpenter
+      values: |
+        settings:
+          clusterName: gitops-demo-dev
+          clusterEndpoint: CHANGE_ME
+          interruptionQueue: CHANGE_ME
+        # serviceAccount:
+        #   annotations:
+        #     eks.amazonaws.com/role-arn: CHANGE_ME
+        controller:
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
   destination:
     server: https://kubernetes.default.svc
+    namespace: kube-system
   syncPolicy:
     automated:
       prune: true
@@ -28,4 +48,4 @@ spec:
         factor: 2
     syncOptions:
       - ServerSideApply=true
-      - ApplyOutOfSyncOnly=true
+      - CreateNamespace=false
