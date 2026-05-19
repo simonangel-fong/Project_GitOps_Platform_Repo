@@ -5,7 +5,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
 spec:
-  role: gitops-demo-dev-cluster-role
+  role: gitops-demo-dev-bootstrap-node-role
   amiSelectorTerms:
     - alias: bottlerocket@latest
   subnetSelectorTerms:
