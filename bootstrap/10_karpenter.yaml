@@ -8,7 +8,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   project: default
   source:
@@ -20,8 +20,8 @@ spec:
       values: |
         settings:
           clusterName: gitops-demo-dev
-          clusterEndpoint: CHANGE_ME
-          interruptionQueue: CHANGE_ME
+          clusterEndpoint: gitops-demo-dev
+          interruptionQueue: gitops-demo-dev
         # serviceAccount:
         #   annotations:
         #     eks.amazonaws.com/role-arn: CHANGE_ME
