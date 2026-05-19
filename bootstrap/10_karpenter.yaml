@@ -24,7 +24,7 @@ spec:
           interruptionQueue: Karpenter-gitops-demo-dev
         serviceAccount:
           annotations:
-            eks.amazonaws.com/role-arn: gitops-demo-dev-cluster-role
+            eks.amazonaws.com/role-arn: arn:aws:iam::099139718958:role/gitops-demo-dev-cluster-role
         controller:
           resources:
             requests:
