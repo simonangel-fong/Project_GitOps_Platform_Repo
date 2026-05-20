@@ -30,8 +30,6 @@ spec:
 
         dashboard:
           enabled: true
-          extraArgs:
-            - --address=0.0.0.0
           resources:
             requests:
               cpu: 50m
