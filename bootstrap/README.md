@@ -10,6 +10,8 @@ k get secret argocd-initial-admin-secret -n argocd -o yaml
 
 echo "" | base64 -d
 
+argocd app sync argocd/00-app-of-apps
+
 ```
 
 - envoy
