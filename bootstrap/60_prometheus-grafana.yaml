@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 60-prometheus-grafana
+  name: platform-60-prometheus-grafana
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io

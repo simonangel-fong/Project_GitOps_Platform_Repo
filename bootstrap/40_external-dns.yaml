@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 40-external-dns
+  name: platform-40-external-dns
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io

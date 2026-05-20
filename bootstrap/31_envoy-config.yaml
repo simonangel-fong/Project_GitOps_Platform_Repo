@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 31-envoy-config
+  name: platform-31-envoy-config
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
