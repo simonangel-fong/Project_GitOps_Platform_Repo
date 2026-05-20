@@ -28,4 +28,8 @@ kubectl wait --timeout=5m -n envoy-gateway-system deployment/envoy-gateway --for
 kubectl patch gatewayclass eg \
   --type=json \
   -p='[{"op":"remove","path":"/metadata/finalizers"}]'
+
+kubectl patch gatewayclass eg \
+  --type=json \
+  -p='[{"op":"remove","path":"/metadata/finalizers"}]'
 ```
