@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/simonangel-fong/Project_GitOps_Config_Repo.git
-    targetRevision: dev
+    targetRevision: main
     path: apps/frontend/overlays/dev
   destination:
     server: https://kubernetes.default.svc
