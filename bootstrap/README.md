@@ -24,4 +24,8 @@ helm install eg oci://docker.io/envoyproxy/gateway-helm --version v1.8.0 -n envo
 
 kubectl wait --timeout=5m -n envoy-gateway-system deployment/envoy-gateway --for=condition=Available
 
+
+kubectl patch gatewayclass eg \
+  --type=json \
+  -p='[{"op":"remove","path":"/metadata/finalizers"}]'
 ```

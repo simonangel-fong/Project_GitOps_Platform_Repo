@@ -15,8 +15,8 @@ spec:
     repoURL: https://github.com/simonangel-fong/Project_GitOps_Platform_Repo.git
     targetRevision: main
     path: platform/karpenter
-    directory:
-      recurse: false
+    # directory:
+    #   recurse: false
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
