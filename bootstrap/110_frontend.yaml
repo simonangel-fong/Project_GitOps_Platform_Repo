@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/simonangel-fong/Project_GitOps_Config_Repo.git
+    repoURL: https://github.com/simonangel-fong/Project_GitOps_Platform_Repo.git
     targetRevision: main
     path: apps/frontend/overlays/dev
   destination:
