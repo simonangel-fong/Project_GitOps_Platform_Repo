@@ -4,9 +4,12 @@ metadata:
   name: gitops-demo-frontend
 spec:
   parentRefs:
-    - name: traefik-gateway
-      namespace: traefik
-      sectionName: websecure
+    - name: eg
+      namespace: gateway
+      sectionName: http
+    - name: eg
+      namespace: gateway
+      sectionName: https
   hostnames:
     - gitops-dev.arguswatcher.net
   rules:

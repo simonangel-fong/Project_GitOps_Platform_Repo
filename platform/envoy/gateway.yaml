@@ -34,6 +34,9 @@ spec:
           service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol: HTTP
           service.beta.kubernetes.io/aws-load-balancer-healthcheck-path: /
           service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: "80"
+          service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+          service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:ca-central-1:099139718958:certificate/df01d434-c17a-4bd3-b394-c07ca24c78ac
+          service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy: ELBSecurityPolicy-TLS13-1-2-2021-06
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
@@ -46,6 +49,12 @@ spec:
     - name: http
       protocol: HTTP
       port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      protocol: HTTP
+      port: 443
       allowedRoutes:
         namespaces:
           from: All
