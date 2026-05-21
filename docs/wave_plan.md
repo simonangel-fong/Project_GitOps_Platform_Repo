@@ -15,8 +15,8 @@ Numbering convention: gaps of 10 between critical waves so new components can be
 | 30   | Envoy Gateway controller (Helm)                   | platform | Ingress data-plane controller                                | ALBC (wave 20)                                          |
 | 31   | Envoy GatewayClass + Gateway                      | platform | Concrete ingress endpoints                                   | Envoy CRDs (wave 30)                                    |
 | 40   | External-DNS (Helm)                               | platform | Publishes Gateway hostnames to Cloudflare                    | Gateway (wave 31), `cloudflare-api-key` Secret (wave 6) |
-| 60   | kube-prometheus-stack (Helm)                      | platform | Prometheus, Grafana, Alertmanager, exporters                 | Cluster fully running                                   |
-| 70   | ArgoCD Notifications (Helm)                       | platform | Slack alerts on Application state changes                    | `argocd-notifications-secret` Secret (wave 6)           |
+| 60   | kube-prometheus-stack (Helm) — **deferred**       | platform | Prometheus, Grafana, Alertmanager, exporters                 | Cluster fully running                                   |
+| 70   | ArgoCD Notifications (Helm) — **deferred**        | platform | Slack alerts on Application state changes                    | `argocd-notifications-secret` Secret (wave 6)           |
 | 90   | Argo Rollouts (Helm)                              | platform | Progressive delivery controller                              | None hard; precedes any app using Rollout CR            |
 | 100+ | User applications (backend, frontend, …)          | platform | Application workloads                                        | All platform pieces above                               |
 
