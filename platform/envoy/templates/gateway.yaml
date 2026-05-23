@@ -7,6 +7,8 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: GatewayClass
 metadata:
   name: eg
+  annotations:
+    argocd.argoproj.io/sync-wave: "211"
 spec:
   controllerName: gateway.envoyproxy.io/gatewayclass-controller
   parametersRef:
@@ -20,13 +22,15 @@ kind: EnvoyProxy
 metadata:
   name: eg-nlb
   namespace: envoy-gateway-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "212"
 spec:
   provider:
     type: Kubernetes
     kubernetes:
       envoyService:
         annotations:
-          service.beta.kubernetes.io/aws-load-balancer-name: gitops-demo-dev
+          service.beta.kubernetes.io/aws-load-balancer-name: {{ .Values.albName | quote }}
           service.beta.kubernetes.io/aws-load-balancer-type: external
           service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
           service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
@@ -34,7 +38,7 @@ spec:
           service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol: TCP
           service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: traffic-port
           service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
-          service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:ca-central-1:099139718958:certificate/df01d434-c17a-4bd3-b394-c07ca24c78ac
+          service.beta.kubernetes.io/aws-load-balancer-ssl-cert: {{ .Values.tlsCertArn | quote }}
           service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy: ELBSecurityPolicy-TLS13-1-2-2021-06
 ---
 apiVersion: gateway.networking.k8s.io/v1
@@ -42,6 +46,8 @@ kind: Gateway
 metadata:
   name: eg
   namespace: gateway
+  annotations:
+    argocd.argoproj.io/sync-wave: "213"
 spec:
   gatewayClassName: eg
   listeners:

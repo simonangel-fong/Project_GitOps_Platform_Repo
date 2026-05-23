@@ -1,0 +1,6 @@
+apiVersion: v2
+name: envoy-config
+description: Envoy Gateway GatewayClass, EnvoyProxy, and Gateway for a single EKS cluster
+type: application
+version: 0.1.0
+appVersion: "1.0"
