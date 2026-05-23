@@ -1,7 +1,5 @@
 # bootstrap/01_namespaces.yaml
 # Wave 1 — pre-creates namespaces that later waves need to exist before
-# they create resources inside them (e.g. ExternalSecrets at wave 6
-# targeting a workload namespace whose chart is installed at a later wave).
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
