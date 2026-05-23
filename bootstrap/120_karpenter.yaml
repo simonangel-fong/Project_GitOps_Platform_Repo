@@ -31,7 +31,7 @@ spec:
           values: |
             settings:
               clusterName: '{{ index .metadata.annotations "eks.cluster-name" }}'
-              clusterEndpoint:   '{{ index .metadata.annotations "eks.cluster-endpoint" }}'
+              clusterEndpoint: '{{ index .metadata.annotations "eks.cluster-endpoint" }}'
               interruptionQueue: '{{ index .metadata.annotations "eks.interruption-queue" }}'
 
             controller:
