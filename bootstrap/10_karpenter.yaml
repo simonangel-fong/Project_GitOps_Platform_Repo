@@ -38,8 +38,6 @@ spec:
               clusterEndpoint:   '{{ index .metadata.annotations "eks.cluster-endpoint" }}'
               interruptionQueue: '{{ index .metadata.annotations "eks.interruption-queue" }}'
 
-
-
             controller:
               resources:
                 requests:
