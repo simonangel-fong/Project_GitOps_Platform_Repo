@@ -12,7 +12,7 @@ spec:
   goTemplate: true
   # goTemplateOptions: ["missingkey=error"]
   generators:
-  - clusters: {} # Automatically use all clusters defined within Argo CD
+  - clusters: {}
   template:
     metadata:
       name: platform-40-external-dns
@@ -42,7 +42,7 @@ spec:
 
             policy: sync
             registry: txt
-            txtOwnerId: gitops-demo-dev
+            txtOwnerId: '{{ index .metadata.annotations "eks.cluster-name" }}'
 
             domainFilters:
               - arguswatcher.net
