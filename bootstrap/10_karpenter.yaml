@@ -5,8 +5,8 @@ kind: ApplicationSet
 metadata:
   name: karpenter
   namespace: argocd
-  # finalizers:
-  #   - resources-finalizer.argocd.argoproj.io
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   goTemplate: true
   # goTemplateOptions: ["missingkey=error"]
@@ -30,7 +30,7 @@ spec:
           releaseName: karpenter
           values: |
             settings:
-              clusterName: gitops-demo-dev
+              clusterName: '{{ index .metadata.annotations "eks.cluster-name" }}'
               clusterEndpoint:   '{{ index .metadata.annotations "eks.cluster-endpoint" }}'
               interruptionQueue: '{{ index .metadata.annotations "eks.interruption-queue" }}'
 

@@ -66,4 +66,4 @@ spec:
         factor: 2
     syncOptions:
       - ServerSideApply=true
-      - CreateNamespace=true
+      # - CreateNamespace=true

@@ -5,8 +5,8 @@ kind: ApplicationSet
 metadata:
   name: albc
   namespace: argocd
-  # finalizers:
-  #   - resources-finalizer.argocd.argoproj.io
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   goTemplate: true
   # goTemplateOptions: ["missingkey=error"]
@@ -29,8 +29,8 @@ spec:
         helm:
           releaseName: albc
           values: |
-            clusterName: gitops-demo-dev
-            region: ca-central-1
+            clusterName: '{{ index .metadata.annotations "eks.cluster-name" }}'
+            region: '{{ index .metadata.annotations "aws-region" }}'
             vpcId: '{{ index .metadata.annotations "vpc.vpc-id" }}'
  
             serviceAccount:
