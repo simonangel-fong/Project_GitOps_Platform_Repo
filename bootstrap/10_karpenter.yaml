@@ -36,7 +36,7 @@ spec:
             settings:
               clusterName: gitops-demo-dev
               clusterEndpoint: {{ index .metadata.annotations "eks.clusterEndpoint" }}
-              interruptionQueue: "{{ indes .metadata.annotations "eks.interruptionQueue"}}
+              interruptionQueue: "{{ index .metadata.annotations "eks.interruptionQueue"}}
 
             controller:
               resources:
@@ -63,6 +63,3 @@ spec:
           - ServerSideApply=true
           - CreateNamespace=false
 
-
-
-# clusterEndpoint: https://6517E58B976EA67A2B34D166F2868165.gr7.ca-central-1.eks.amazonaws.com
