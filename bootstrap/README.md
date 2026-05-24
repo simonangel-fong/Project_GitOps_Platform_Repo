@@ -55,3 +55,10 @@ ESO (-6)
                 │      └──► Argo Rollouts (-1)
                 │                 └──► App (0)
                 └──► External DNS (-2)
+
+
+```sh
+kubectl patch EnvoyProxy eg-nlb -p '{"metadata":{"finalizers":[]}}' --type=merge -n envoy-gateway-system
+kubectl patch GatewayClass eg -p '{"metadata":{"finalizers":[]}}' --type=merge -n envoy-gateway-system
+kubectl patch EC2NodeClass general-node-class -p '{"metadata":{"finalizers":[]}}' --type=merge -n envoy-gateway-system
+```
