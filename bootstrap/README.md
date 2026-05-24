@@ -36,6 +36,7 @@ kubectl patch gatewayclass eg \
 
 ```sh
 curl -v -H "Host: gitops-dev.arguswatcher.net" http://gitops-demo-dev-420f0504fde951d4.elb.ca-central-1.amazonaws.com
+curl -v -H "Host: gitops-stage.arguswatcher.net" http://gitops-stage-bfb16a510327f164.elb.ca-central-1.amazonaws.com
 
 
 

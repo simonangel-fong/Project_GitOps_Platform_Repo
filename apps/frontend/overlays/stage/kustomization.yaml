@@ -32,10 +32,3 @@ patches:
       - op: replace
         path: /spec/metrics/0/resource/target/averageUtilization
         value: 70
-  - target:
-      kind: HTTPRoute
-      name: gitops-demo-frontend
-    patch: |-
-      - op: replace
-        path: /spec/hostnames/0
-        value: gitops-stage.arguswatcher.net
