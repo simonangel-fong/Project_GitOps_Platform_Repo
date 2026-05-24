@@ -3,16 +3,18 @@ kind: Kustomization
 namespace: frontend
 resources:
   - ../../base
+
 images:
-  # CI writes newTag (and adds digest:) via `kustomize edit set image` on each merge to main.
   - name: gitops-demo-frontend
     newName: docker.io/simonangelfong/gitops-demo-frontend
     newTag: app-v0.2.0
+
 labels:
   - includeSelectors: false
     pairs:
       app.kubernetes.io/instance: gitops-demo-frontend-dev
       env: dev
+      
 patches:
   - target:
       kind: HorizontalPodAutoscaler
