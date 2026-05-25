@@ -84,13 +84,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          mkdir -p .checkov-rendered
           checkov \
             --directory .rendered \
             --config-file .checkov.yaml \
             --framework kubernetes \
             --output cli \
             --output sarif \
-            --output-file-path console,.rendered
+            --output-file-path console,.checkov-rendered
 
       - name: Run Checkov (non-kustomize paths)
         shell: bash
