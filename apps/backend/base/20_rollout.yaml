@@ -30,16 +30,34 @@ spec:
               containerPort: 8080
               protocol: TCP
           env:
-          - name: BACKEND_VERSION
-            value: "0.3.0"
+            - name: BACKEND_VERSION
+              value: "0.1.0"
+            - name: FRONTEND_BG_COLOR
+              value: "green"
+            - name: PGDB_ENABLE
+              value: "false"
+            - name: PGDB_URL
+              value: "jdbc:postgresql://postgres:5432/demo_db"
+            - name: OOM_ENABLE
+              value: "true"
+            - name: OOM_TIME
+              value: "1"
           livenessProbe:
             httpGet:
               path: /api/healthz
               port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 10
           readinessProbe:
             httpGet:
               path: /api/healthz
               port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 10
           resources:
             requests:
               cpu: 100m
