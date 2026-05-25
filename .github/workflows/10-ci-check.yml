@@ -86,7 +86,7 @@ jobs:
         uses: ./.github/actions/notify-slack
         with:
           slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
-          slack-channel: ${{ vars.SLACK_CHANNEL_CI }}
+          slack-channel: ${{ vars.SLACK_CHANNEL }}
           status: ${{ contains(needs.*.result, 'failure') && 'failure' || contains(needs.*.result, 'cancelled') && 'cancelled' || 'success' }}
           workflow: ${{ github.workflow }}
           run-url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
