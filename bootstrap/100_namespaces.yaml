@@ -27,7 +27,6 @@ spec:
       source:
         repoURL: https://github.com/simonangel-fong/Project_GitOps_Platform_Repo.git
         targetRevision: '{{ index .metadata.annotations "env" }}'
-        # targetRevision: main
         path: platform/namespaces
       destination:
         server: https://kubernetes.default.svc
