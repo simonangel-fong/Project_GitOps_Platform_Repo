@@ -1,5 +1,5 @@
 name: security-scan
-description: Scan Kubernetes, Helm, and Kustomize manifests with Checkov. Skip-list lives in .checkov.yaml.
+description: Render Kustomize overlays, then scan rendered output and raw Helm/bootstrap manifests with Checkov. Uploads SARIF to GitHub Security.
 
 runs:
   using: composite
@@ -15,7 +15,29 @@ runs:
         CHECKOV_VERSION: "3.2.334"
       run: pip install --no-cache-dir "checkov==${CHECKOV_VERSION}"
 
-    - name: Run Checkov
+    - name: Render Kustomize overlays
+      shell: bash
+      run: |
+        set -euo pipefail
+        mkdir -p .rendered
+        for overlay in apps/*/overlays/*/; do
+          name="$(echo "${overlay}" | tr '/' '_' | sed 's/_$//')"
+          echo "Rendering ${overlay} -> .rendered/${name}.yaml"
+          kustomize build "${overlay}" > ".rendered/${name}.yaml"
+        done
+
+    - name: Run Checkov (rendered overlays)
+      shell: bash
+      run: |
+        set -euo pipefail
+        checkov \
+          --directory .rendered \
+          --config-file .checkov.yaml \
+          --output cli \
+          --output sarif \
+          --output-file-path console,results_sarif_rendered.sarif
+
+    - name: Run Checkov (non-kustomize paths)
       shell: bash
       run: |
         set -euo pipefail
@@ -24,11 +46,18 @@ runs:
           --config-file .checkov.yaml \
           --output cli \
           --output sarif \
-          --output-file-path console,.
+          --output-file-path console,results_sarif_raw.sarif
 
-    - name: Upload SARIF to GitHub Security
+    - name: Upload SARIF (rendered overlays) to GitHub Security
       if: always()
       uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3.29.4
       with:
-        sarif_file: results_sarif.sarif
-        category: checkov
+        sarif_file: results_sarif_rendered.sarif
+        category: checkov-rendered
+
+    - name: Upload SARIF (non-kustomize) to GitHub Security
+      if: always()
+      uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3.29.4
+      with:
+        sarif_file: results_sarif_raw.sarif
+        category: checkov-raw
