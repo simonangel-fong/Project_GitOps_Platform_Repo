@@ -10,3 +10,10 @@ cloudflare:
   refreshInterval: 1h
   secretName: cloudflare-api-key
   secretKey: cloudflare_api_key
+
+slack:
+  ssmKey: ""
+  namespace: argocd
+  refreshInterval: 1h
+  secretName: argocd-notifications-secret
+  secretKey: slack-token
