@@ -11,6 +11,7 @@ spec:
     - https://github.com/simonangel-fong/Project_GitOps_Platform_Repo.git
     - https://charts.external-secrets.io
     - public.ecr.aws/karpenter
+    - https://aws.github.io/eks-charts
   destinations:
     - server: https://kubernetes.default.svc
       namespace: "*"
