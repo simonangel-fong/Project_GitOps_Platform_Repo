@@ -83,14 +83,10 @@ spec:
               cpu: 100m
               memory: 128Mi
 
+        nodeExporter:
+          enabled: false
         prometheus-node-exporter:
-          resources:
-            requests:
-              cpu: 25m
-              memory: 32Mi
-            limits:
-              cpu: 100m
-              memory: 64Mi
+          enabled: false
 
         prometheusOperator:
           resources:
