@@ -109,3 +109,15 @@ case 3a
 git revert 43d66eb --no-edit
 git push
 ```
+
+
+---
+
+notification:
+
+```bash
+# Verify a Slack bot token against the Slack API.
+# Export the token first — never paste it into a tracked file:
+#   export token=xoxb-...
+curl -H "Authorization: Bearer $token" https://slack.com/api/auth.test
+```

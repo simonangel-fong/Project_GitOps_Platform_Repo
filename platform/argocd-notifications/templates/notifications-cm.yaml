@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: argocd
 data:
   service.slack: |
-    token: ${{ "{" }}{{ .Values.slack.secretKey }}{{ "}" }}
+    token: ${{ .Values.slack.secretKey }}
 
   subscriptions: |
     - recipients:

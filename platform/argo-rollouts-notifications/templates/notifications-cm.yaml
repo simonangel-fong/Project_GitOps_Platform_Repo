@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: argo-rollouts
 data:
   service.slack: |
-    token: ${{ "{" }}{{ .Values.slack.secretKey }}{{ "}" }}
+    token: ${{ .Values.slack.secretKey }}
 
   template.rollout-completed: |
     message: |
