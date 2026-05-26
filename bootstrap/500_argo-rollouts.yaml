@@ -39,6 +39,11 @@ spec:
             limits:
               cpu: 100m
               memory: 128Mi
+
+        notifications:
+          notifiers: {}
+          templates: {}
+          triggers: {}
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-rollouts
