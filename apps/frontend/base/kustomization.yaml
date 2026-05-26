@@ -16,6 +16,6 @@ resources:
 labels:
   - includeSelectors: false
     pairs:
-      app.kubernetes.io/name: gitops-demo-frontend
+      app.kubernetes.io/name: gitops-frontend
       app.kubernetes.io/component: frontend
       app.kubernetes.io/part-of: gitops-demo

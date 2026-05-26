@@ -31,7 +31,7 @@ spec:
           patches:
             - target:
                 kind: HTTPRoute
-                name: gitops-demo-frontend
+                name: gitops-frontend
               patch: |-
                 - op: replace
                   path: /spec/hostnames/0

@@ -6,7 +6,7 @@ spec:
   # egress for backend
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: gitops-demo-frontend
+      app.kubernetes.io/name: gitops-frontend
   policyTypes:
     - Egress
   egress:

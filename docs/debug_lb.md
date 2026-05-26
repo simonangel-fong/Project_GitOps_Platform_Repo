@@ -16,7 +16,7 @@ NLB hang at TCP layer means no healthy targets, blocked SG, or wrong subnets. Ru
 
 | Hypothesis                  | Command                                                                                            | Verdict                                            |
 | --------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| App pod down / no endpoints | `kubectl get endpoints -n frontend gitops-demo-frontend`                                           | OK — `10.0.11.205:80`                              |
+| App pod down / no endpoints | `kubectl get endpoints -n frontend gitops-frontend`                                           | OK — `10.0.11.205:80`                              |
 | HTTPRoute not attached      | `kubectl get gateway eg -n gateway -o jsonpath='{.status.listeners[*].attachedRoutes}'`            | OK                                                 |
 | NLB in private subnets      | `aws ec2 describe-subnets --subnet-ids <ids> --query "Subnets[*].MapPublicIpOnLaunch"`             | OK — all `true`                                    |
 | Node SG blocks NLB traffic  | `aws ec2 describe-security-groups --group-ids <node-sg> --query "SecurityGroups[0].IpPermissions"` | OK — allows from NLB SG on `80–10443`              |

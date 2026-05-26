@@ -5,7 +5,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: gitops-demo-frontend
+      app.kubernetes.io/name: gitops-frontend
   policyTypes:
     - Ingress
   ingress:

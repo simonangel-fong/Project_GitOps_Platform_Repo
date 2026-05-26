@@ -1,12 +1,12 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: gitops-demo-frontend
+  name: gitops-frontend
 spec:
   scaleTargetRef:
     apiVersion: argoproj.io/v1alpha1
     kind: Rollout
-    name: gitops-demo-frontend
+    name: gitops-frontend
   minReplicas: 1
   maxReplicas: 2
   metrics:

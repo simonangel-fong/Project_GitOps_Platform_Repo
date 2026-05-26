@@ -2,7 +2,7 @@
 ```sh
 kubectl port-forward svc/gitops-backend 8080:8080 -n backend
 
-kubectl port-forward svc/gitops-demo-frontend 8800:80 -n frontend
+kubectl port-forward svc/gitops-frontend 8800:80 -n frontend
 
 
 
