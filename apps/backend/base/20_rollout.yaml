@@ -2,6 +2,12 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: gitops-backend
+  annotations:
+    notifications.argoproj.io/subscribe.on-rollout-completed.slack: "deployments"
+    notifications.argoproj.io/subscribe.on-rollout-degraded.slack: "deployments,platform-alerts"
+    notifications.argoproj.io/subscribe.on-rollout-paused.slack: "deployments"
+    notifications.argoproj.io/subscribe.on-analysis-run-failed.slack: "deployments,platform-alerts"
+    notifications.argoproj.io/subscribe.on-analysis-run-error.slack: "platform-alerts"
 spec:
   # replicas is intentionally omitted — the HPA owns it.
   selector:
