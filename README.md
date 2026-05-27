@@ -1,23 +1,23 @@
-# Project: GitOps Canary Promotion
+# GitOps Canary Promotion
 
 **End to End. Auto-Promoted. Canary-Released**
 
-> A production-style GitOps project that separates application, infrastructure, and platform delivery across 3 repositories. 
-> It uses EKS, ArgoCD, Argo Rollouts, Terraform, and GitHub Actions to automate environment-based deployments, canary promotion, rollback, and post-deployment monitoring.
+> A production-style GitOps project that separates application, infrastructure, and platform delivery across 3 repositories. <br>
+> It uses EKS, ArgoCD, Argo Rollouts, Terraform, and GitHub Actions to automate environment-based deployments, canary promotion, rollback, and post-deployment monitoring and alerting.
 
-![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white&style=plastic) ![Argo CD](https://img.shields.io/badge/Argo%20CD-EF7B4D?style=for-the-badge&logo=argo&logoColor=white&style=plastic) ![Argo Rollouts](https://img.shields.io/badge/Argo%20Rollouts-EF7B4D?style=for-the-badge&logo=argo&logoColor=white&style=plastic) ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white&style=plastic)
-![AWS](https://img.shields.io/badge/AWS-FF9900?style=for-the-badge&logo=amazonwebservices&logoColor=white&style=plastic) ![Amazon EKS](https://img.shields.io/badge/Amazon%20EKS-FF9900?tyle=for-the-badge&logo=amazoneks&logoColor=white&style=plastic) ![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white&style=plastic) ![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=for-the-badge&logo=terraform&logoColor=white&style=plastic) ![Kustomize](https://img.shields.io/badge/Kustomize-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white&style=plastic) ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white&style=plastic)
-![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white&style=plastic) ![Grafana](https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white&style=plastic) ![Alertmanager](https://img.shields.io/badge/Alertmanager-E6522C?style=for-the-badge&logo=prometheus&logoColor=white&style=plastic) ![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white&style=plastic)
+![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white&style=plastic) ![Argo CD](https://img.shields.io/badge/Argo%20CD-EF7B4D?style=for-the-badge&logo=argo&logoColor=white&style=plastic) ![Argo Rollouts](https://img.shields.io/badge/Argo%20Rollouts-EF7B4D?style=for-the-badge&logo=argo&logoColor=white&style=plastic) ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white&style=plastic) <br>
+![AWS](https://img.shields.io/badge/AWS-FF9900?style=for-the-badge&logo=amazonwebservices&logoColor=white&style=plastic) ![Amazon EKS](https://img.shields.io/badge/Amazon%20EKS-FF9900?tyle=for-the-badge&logo=amazoneks&logoColor=white&style=plastic) ![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white&style=plastic) ![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=for-the-badge&logo=terraform&logoColor=white&style=plastic) ![Kustomize](https://img.shields.io/badge/Kustomize-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white&style=plastic) ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white&style=plastic) <br>
+![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white&style=plastic) ![Grafana](https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white&style=plastic) ![Alertmanager](https://img.shields.io/badge/Alertmanager-E6522C?style=for-the-badge&logo=prometheus&logoColor=white&style=plastic) ![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white&style=plastic) <br>
 
-<!-- ![Checkov](https://img.shields.io/badge/Checkov-5C4EE5?style=for-the-badge&logo=checkmarx&logoColor=white&style=plastic) -->
-
-- [Project: GitOps Canary Promotion](#project-gitops-canary-promotion)
+- [GitOps Canary Promotion](#gitops-canary-promotion)
   - [1. Why This Project Exists](#1-why-this-project-exists)
-    - [Challenge 1: Managing App, Infrastructure, and Platform Changes](#challenge-1-managing-app-infrastructure-and-platform-changes)
-    - [Challenge 2: Releasing Safely Without Business Interruption](#challenge-2-releasing-safely-without-business-interruption)
+    - [Managing App, Infrastructure, and Platform Changes](#managing-app-infrastructure-and-platform-changes)
+    - [Releasing Safely Without Business Interruption](#releasing-safely-without-business-interruption)
   - [2. Project Architecture](#2-project-architecture)
   - [3. What This Platform Repo Manages](#3-what-this-platform-repo-manages)
     - [3.1 Canary Deployment and Auto Rollback](#31-canary-deployment-and-auto-rollback)
+      - [Scenario Demo: Happy path promotion](#scenario-demo-happy-path-promotion)
+      - [Scenario Demo: Failure rollback on DB connection error](#scenario-demo-failure-rollback-on-db-connection-error)
     - [3.2 Deployment Control with ArgoCD Sync Waves](#32-deployment-control-with-argocd-sync-waves)
     - [3.3 Automated Pipelines and Promotion Flow](#33-automated-pipelines-and-promotion-flow)
     - [3.4 Environment Strategy](#34-environment-strategy)
@@ -29,29 +29,37 @@
 
 ## 1. Why This Project Exists
 
-Modern software delivery requires more than deploying application code. Teams also need to manage infrastructure, platform services, release control, monitoring, and rollback in a consistent way.
+### Managing App, Infrastructure, and Platform Changes
 
-### Challenge 1: Managing App, Infrastructure, and Platform Changes
+**Challenge:**
 
-In enterprise environments, application code, cloud infrastructure, and Kubernetes platform configuration are often owned by different roles. Without clear separation and automated GitOps workflows, delivery can become slow, inconsistent, and difficult to audit.
+- In enterprise environments, _application code_, _cloud infrastructure_, and _Kubernetes platform configuration_ are often owned by different roles.
+- Without clear separation and automated GitOps workflows, delivery can become slow, inconsistent, and difficult to audit.
 
-**Response:**  
-This project uses a 3-repo GitOps strategy to separate application, infrastructure, and platform responsibilities. CI/CD pipelines automate validation, image delivery, infrastructure provisioning, and manifest updates, making the delivery process more traceable and repeatable.
+**Response:**
+
+- This project uses a `3-repo GitOps strategy` to separate application, infrastructure, and platform responsibilities.
+- CI/CD pipelines automate validation, image delivery, infrastructure provisioning, and manifest updates, making the delivery process more traceable and repeatable.
 
 ---
 
-### Challenge 2: Releasing Safely Without Business Interruption
+### Releasing Safely Without Business Interruption
 
-Direct production releases increase the risk of downtime, failed deployments, and slow recovery. Without a controlled deployment strategy, issues may only be detected after they affect users.
+**Challenge:**
 
-**Response:**  
-This project implements canary deployment across isolated `dev`, `stage`, and `prod` environments. Argo Rollouts, automated analysis, monitoring, and rollback logic help detect issues early, reduce release risk, and protect business continuity.
+- Direct production releases increase the risk of downtime, failed deployments, and slow recovery.
+- Without a controlled deployment strategy, issues may only be detected after they affect users.
+
+**Response:**
+
+- This project implements canary deployment across isolated `dev`, `stage`, and `prod` environments.
+- `Argo Rollouts`, automated analysis, monitoring, and rollback logic help detect issues early, reduce release risk, and protect business continuity.
 
 ---
 
 ## 2. Project Architecture
 
-This project uses a 3-repo GitOps model to separate application delivery, infrastructure provisioning, and platform configuration.
+- 3-repo GitOps model to separate application delivery, infrastructure provisioning, and platform configuration.
 
 ```txt
                                 End Users
@@ -96,7 +104,8 @@ This project uses a 3-repo GitOps model to separate application delivery, infras
 
 ## 3. What This Platform Repo Manages
 
-This platform repo acts as the **GitOps control plane** for the project after the EKS cluster and ArgoCD are provisioned by the infrastructure repo.
+This `platform repo` acts as the **GitOps control plane** for the project after the EKS cluster and ArgoCD are provisioned by the infrastructure repo.
+
 It manages
 
 - Kubernetes application manifests,
@@ -104,7 +113,7 @@ It manages
 - platform add-ons,
 - environment overlays,
 - canary rollout definitions,
-- secret integration,
+- external secrets integration,
 - monitoring configuration,
 - and notification workflows.
 
@@ -149,49 +158,44 @@ The repository is organized around GitOps ownership, environment separation, and
 
 ### 3.1 Canary Deployment and Auto Rollback
 
-Canary deployment reduces release risk by gradually shifting traffic to a new version, validating application health, and rolling back automatically before a bad release affects all users.
+`Canary deployment` reduces release risk by gradually shifting traffic to a new version, validating application health, and rolling back automatically before a bad release affects all users.
 
-This project uses **Argo Rollouts**, **AnalysisTemplates**, **Prometheus metrics**, and **Slack notifications** to automate canary promotion, failure detection, rollback, and release visibility.
+This project uses `Argo Rollouts`, `AnalysisTemplates`, `Prometheus metrics`, and `Slack notifications` to automate **canary promotion**, **failure detection**, **rollback**, and **release visibility**.
 
 ```text
 New Image / Manifest Update
-        |
         v
 ArgoCD Syncs Rollout Manifest
-        |
         v
 Argo Rollouts Starts Canary Release
-        |
         v
-Shift Small Portion (25%) of Traffic to New Version
-        |
+Shift Small Portion of Traffic to New Version
         v
 Run AnalysisTemplate Checks
-        |
         +----------------------------+
-        |                            |
         v                            v
 Metrics Healthy                Metrics Failed
-        |                            |
         v                            v
 Promote New Version            Roll Back to Stable Version
-        |                            |
         v                            v
 Send Slack Notification        Send Slack Notification
 ```
 
 ---
 
-- Scenario: Happy path promotion
-  - A new version passes analysis, traffic is gradually promoted, and Slack receives the deployment result.
+#### Scenario Demo: Happy path promotion
+
+- A new version passes analysis, traffic is gradually promoted, and Slack receives the deployment result.
 
 ![canary-happy-path](docs/assets/canary-happy-path.gif)
 
 ---
 
-- Scenario: Failure rollback on DB connection error
-  - A bad release fails health/metric validation, Argo Rollouts rolls back to the stable version, and Slack receives the rollback notification.
-    ![canary-happy-path](docs/assets/canary-db-failure-rollback.gif)
+#### Scenario Demo: Failure rollback on DB connection error
+
+- A bad release fails health/metric validation, Argo Rollouts rolls back to the stable version, and Slack receives the rollback notification.
+
+![canary-happy-path](docs/assets/canary-db-failure-rollback.gif)
 
 For the full walkthrough, see [docs/canary_demo.md](docs/canary_demo.md).
 
@@ -201,11 +205,14 @@ For the full walkthrough, see [docs/canary_demo.md](docs/canary_demo.md).
 
 Application resources depend on platform services such as secrets, ingress, DNS, rollout controllers, and monitoring, so deployment order must be controlled.
 
-This repo uses **ArgoCD Sync Waves** to deploy resources layer by layer: lower wave numbers run first, higher wave numbers run later.
+This repo uses `ArgoCD Sync Waves` to deploy resources layer by layer:
+
+- lower wave numbers run first
+- higher wave numbers run later.
+
+ArgoCD Sync Wave Deployment Order:
 
 ```text
-ArgoCD Sync Wave Deployment Order
-
 Wave 110  ── External Secrets Operator
               v
 Wave 120  ── Karpenter
@@ -229,30 +236,28 @@ Wave 910  ── Frontend Application
 
 ### 3.3 Automated Pipelines and Promotion Flow
 
-This project uses automated pipelines to validate platform changes, promote manifests across environments, and keep production releases approval-based.
+This project creates `automated pipelines` to **validate platform changes**, **promote manifests across environments**, and **keep production releases approval-based**.
 
 | Env     | Owner / Trigger                                         | Jobs Automated by Pipeline                                                                                          |
 | ------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `dev`   | Platform Engineer commits manifest changes              | Manifest linting, security scan, GitOps sync, smoke test, failure notification                                      |
+| `dev`   | Platform Engineer commits manifest changes              | Manifest lint check, security scan, GitOps sync, smoke test, failure notification                                   |
 | `stage` | Auto-promotion after dev validation                     | Promote manifests to stage, GitOps sync, load test, validation notification                                         |
 | `prod`  | Release Owner reviews and approves production promotion | Promote manifests to prod, GitOps sync, release notification, post-deployment monitoring, Alertmanager notification |
 
-- The pipeline keeps `dev` and `stage` highly automated for fast validation, while `prod` requires release approval to protect production stability.
+- The pipeline keeps `dev` and `stage` highly automated for fast validation,
+- The `prod` requires release approval to protect production stability.
 
 ---
 
 ### 3.4 Environment Strategy
 
-This project separates `dev`, `stage`, and `prod` to support fast validation, production-like testing, and controlled production release. Each environment has a clear purpose, so changes can move through the delivery flow with lower risk.
+This project separates `dev`, `stage`, and `prod` to support fast validation, production-like testing, and controlled production release. Each environment has a **dedicated cluster**, so changes can move through the delivery flow **with lower risk**.
 
-- The infrastructure repo provisions a separate EKS cluster for each environment
-- This platform repo manages the GitOps branch, manifests, and promotion flow for each cluster.
-
-| Env     | Branch  | Cluster Name   | Purpose                                            | Feature                            |
-| ------- | ------- | -------------- | -------------------------------------------------- | ---------------------------------- |
-| `dev`   | `dev`   | `gitops-dev`   | Safe space for development and early validation    | Flexible, fast-changing            |
-| `stage` | `stage` | `gitops-stage` | Production-like environment for release validation | Test-heavy, production-like        |
-| `prod`  | `prod`  | `gitops-prod`  | Live environment for end users                     | Stable, reliable, security-focused |
+| Env     | Branch  | Dedicated Cluster | Purpose                                            | Feature                            |
+| ------- | ------- | ----------------- | -------------------------------------------------- | ---------------------------------- |
+| `dev`   | `dev`   | `gitops-dev`      | Safe space for development and early validation    | Flexible, fast-changing            |
+| `stage` | `stage` | `gitops-stage`    | Production-like environment for release validation | Test-heavy, production-like        |
+| `prod`  | `prod`  | `gitops-prod`     | Live environment for end users                     | Stable, reliable, security-focused |
 
 ---
 
@@ -260,12 +265,10 @@ This project separates `dev`, `stage`, and `prod` to support fast validation, pr
 
 This repo includes runbooks for common platform issues and troubleshooting workflows. Detailed debugging steps are kept in separate documents:
 
-| Runbook                                | Path                                                                 | Purpose                                                                 |
-| -------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Debugging ExternalDNS                  | [`docs/debug_edns.md`](docs/debug_edns.md)                           | Common ExternalDNS sync issues and troubleshooting steps                |
-| Debugging AWS Load Balancer Controller | [`docs/debug_lb.md`](docs/debug_lb.md)                               | Common ALB / load balancer misconfigurations and fixes                  |
-| Debugging ArgoCD Sync Waves            | [`docs/argocd_wave.md`](docs/argocd_wave.md)                         | Sync wave ordering and dependency control                               |
-| Debugging Slack Notifications          | [`docs/debug_argo_notification.md`](docs/debug_argo_notification.md) | Slack notification setup and common issues for ArgoCD and Argo Rollouts |
+- [Debugging ExternalDNS](docs/debug_edns.md): Common ExternalDNS sync issues and troubleshooting steps
+- [Debugging AWS Load Balancer Controller](docs/debug_lb.md): Common load balancer misconfigurations and fixes
+- [Debugging ArgoCD Sync Waves](docs/argocd_wave.md): Sync wave ordering and dependency control
+- [Debugging Slack Notifications](docs/debug_argo_notification.md): Slack notification setup and common issues for ArgoCD and Argo Rollouts
 
 ---
 
@@ -273,12 +276,14 @@ This repo includes runbooks for common platform issues and troubleshooting workf
 
 This project focuses on GitOps delivery design, canary promotion, and platform automation. Some production-grade areas can be improved further:
 
-| Limitation                                                                                 | What Can Be Improved                                                                                                 |
-| ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| Separate clusters improve isolation but increase operational cost and management overhead. | Add cost controls, shared platform modules, and automated cleanup for non-prod environments.                         |
-| Canary rollback depends on selected health checks and metrics.                             | Expand analysis with stronger SLO-based metrics such as error rate, latency, saturation, and business-level signals. |
-| Production promotion still requires manual approval.                                       | Integrate richer release evidence, approval history, and change-management records before production deployment.     |
-| The project demonstrates platform automation but does not cover full disaster recovery.    | Add backup, restore, multi-AZ / multi-region failover testing, and recovery runbooks.                                |
+- Separate clusters improve isolation but increase operational cost and management overhead.
+  - **Improvement**: Add cost controls, shared platform modules, and automated cleanup for non-prod environments.
+- Canary rollback depends on selected health checks and metrics(pod readiness).
+  - **Improvement**: Expand analysis with stronger SLO-based metrics such as error rate, latency, saturation, and business-level signals.
+- Production promotion still requires manual approval.
+  - **Improvement**: Integrate richer release evidence, approval history, and change-management records before production deployment.
+- The project demonstrates platform automation but does not cover full disaster recovery.
+  - **Improvement**: Add backup, restore, multi-AZ / multi-region failover testing, and recovery runbooks.
 
 ---
 
