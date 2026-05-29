@@ -19,13 +19,15 @@ spec:
       namespace: argocd
       finalizers:
         - resources-finalizer.argocd.argoproj.io
+      labels:
+        type: app
       annotations:
         argocd.argoproj.io/sync-wave: "900"
     spec:
-      project: default
+      project: gitops
       source:
         repoURL: https://github.com/simonangel-fong/Project_GitOps_Platform_Repo.git
-        targetRevision: main
+        targetRevision: '{{ index .metadata.annotations "env" }}'
         path: apps/backend/overlays/{{ index .metadata.annotations "env" }}
       destination:
         server: https://kubernetes.default.svc

@@ -7,10 +7,12 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  labels:
+    type: platform
   annotations:
     argocd.argoproj.io/sync-wave: "210"
 spec:
-  project: default
+  project: gitops
   source:
     repoURL: docker.io/envoyproxy
     chart: gateway-helm

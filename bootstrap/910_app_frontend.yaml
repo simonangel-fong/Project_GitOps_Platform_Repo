@@ -19,19 +19,21 @@ spec:
       namespace: argocd
       finalizers:
         - resources-finalizer.argocd.argoproj.io
+      labels:
+        type: app
       annotations:
         argocd.argoproj.io/sync-wave: "910"
     spec:
-      project: default
+      project: gitops
       source:
         repoURL: https://github.com/simonangel-fong/Project_GitOps_Platform_Repo.git
-        targetRevision: main
+        targetRevision: '{{ index .metadata.annotations "env" }}'
         path: apps/frontend/overlays/{{ index .metadata.annotations "env" }}
         kustomize:
           patches:
             - target:
                 kind: HTTPRoute
-                name: gitops-demo-frontend
+                name: gitops-frontend
               patch: |-
                 - op: replace
                   path: /spec/hostnames/0

@@ -5,20 +5,20 @@ resources:
   - ../../base
 
 images:
-  - name: gitops-demo-frontend
-    newName: docker.io/simonangelfong/gitops-demo-frontend
+  - name: gitops-frontend
+    newName: docker.io/simonangelfong/gitops-frontend
     newTag: app-v0.2.0
 
 labels:
   - includeSelectors: false
     pairs:
-      app.kubernetes.io/instance: gitops-demo-frontend-prod
+      app.kubernetes.io/instance: gitops-frontend-prod
       env: prod
 
 patches:
   - target:
       kind: HorizontalPodAutoscaler
-      name: gitops-demo-frontend
+      name: gitops-frontend
     patch: |-
       - op: replace
         path: /spec/minReplicas

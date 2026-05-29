@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: gitops
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: "Project GitOps"
+  sourceRepos:
+    - https://github.com/simonangel-fong/Project_GitOps_Platform_Repo.git
+    - https://charts.external-secrets.io
+    - public.ecr.aws/karpenter
+    - https://aws.github.io/eks-charts
+    - docker.io/envoyproxy
+    - https://kubernetes-sigs.github.io/external-dns
+    - https://prometheus-community.github.io/helm-charts
+    - https://argoproj.github.io/argo-helm
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: "*"
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"

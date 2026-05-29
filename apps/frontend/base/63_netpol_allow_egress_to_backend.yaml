@@ -6,7 +6,7 @@ spec:
   # egress for backend
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: gitops-demo-frontend
+      app.kubernetes.io/name: gitops-frontend
   policyTypes:
     - Egress
   egress:
@@ -16,7 +16,7 @@ spec:
               kubernetes.io/metadata.name: backend
           podSelector:
             matchLabels:
-              app.kubernetes.io/name: gitops-demo-backend
+              app.kubernetes.io/name: gitops-backend
       ports:
         - protocol: TCP
           port: 8080

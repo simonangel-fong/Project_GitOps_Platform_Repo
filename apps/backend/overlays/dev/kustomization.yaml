@@ -4,25 +4,47 @@ namespace: backend
 resources:
   - ../../base
 images:
-  - name: gitops-demo-backend
-    newName: docker.io/simonangelfong/gitops-demo-backend
-    newTag: v0.2.4
+  - name: gitops-risk-control-backend
+    newName: docker.io/simonangelfong/gitops-risk-control-backend
+    newTag: v0.3.1
 labels:
   - includeSelectors: false
     pairs:
-      app.kubernetes.io/instance: gitops-demo-backend-dev
+      app.kubernetes.io/instance: gitops-backend
       env: dev
 patches:
   - target:
       kind: HorizontalPodAutoscaler
-      name: gitops-demo-backend
+      name: gitops-backend
     patch: |-
       - op: replace
         path: /spec/minReplicas
-        value: 1
-      - op: replace
-        path: /spec/maxReplicas
         value: 2
       - op: replace
+        path: /spec/maxReplicas
+        value: 3
+      - op: replace
         path: /spec/metrics/0/resource/target/averageUtilization
-        value: 80
+        value: 60
+  - target:
+      kind: Rollout
+      name: gitops-backend
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/env/0/value
+        value: "0.3.1"
+      - op: replace
+        path: /spec/template/spec/containers/0/env/1/value
+        value: "red"
+      - op: replace
+        path: /spec/template/spec/containers/0/env/2/value
+        value: "false"
+      - op: replace
+        path: /spec/template/spec/containers/0/env/3/value
+        value: "jdbc:postgresql://postgres:5432/demo_db"
+      - op: replace
+        path: /spec/template/spec/containers/0/env/4/value
+        value: "false"
+      - op: replace
+        path: /spec/template/spec/containers/0/env/5/value
+        value: "1"

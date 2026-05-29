@@ -1,41 +1,55 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: gitops-demo-frontend
+  name: gitops-frontend
+  annotations:
+    notifications.argoproj.io/subscribe.on-rollout-completed.slack: "deployments"
+    notifications.argoproj.io/subscribe.on-rollout-degraded.slack: "deployments,platform-alerts"
+    notifications.argoproj.io/subscribe.on-rollout-paused.slack: "deployments"
+    notifications.argoproj.io/subscribe.on-analysis-run-failed.slack: "deployments,platform-alerts"
+    notifications.argoproj.io/subscribe.on-analysis-run-error.slack: "platform-alerts"
 spec:
   # replicas is intentionally omitted — the HPA owns it.
   selector:
     matchLabels:
-      app.kubernetes.io/name: gitops-demo-frontend
+      app.kubernetes.io/name: gitops-frontend
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: gitops-demo-frontend
+        app.kubernetes.io/name: gitops-frontend
     spec:
-      serviceAccountName: gitops-demo-frontend
+      serviceAccountName: gitops-frontend
       containers:
-        - name: gitops-demo-frontend
-          image: gitops-demo-frontend
+        - name: gitops-frontend
+          image: gitops-frontend
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
           env:
-            # Same value across envs — each cluster runs its own backend
-            # in the "backend" namespace.
-            - name: BACKEND_URL
-              value: "http://gitops-demo-backend.backend.svc.cluster.local:8080"
-            - name: NGINX_ENVSUBST_FILTER
-              value: "BACKEND_URL"
+          - name: BACKEND_URL
+            value: "http://gitops-backend.backend.svc.cluster.local:8080"
+          - name: DNS_RESOLVER
+            value: "kube-dns.kube-system.svc.cluster.local"
+          - name: NGINX_ENVSUBST_FILTER
+            value: "BACKEND_URL|DNS_RESOLVER"
           livenessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 10
           readinessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 10
           resources:
             requests:
               cpu: 100m
@@ -47,7 +61,7 @@ spec:
     canary:
       steps:
         - setWeight: 25
-        - pause: {}
+        - pause: { duration: 60s } 
         - setWeight: 50
-        - pause: {}
+        - pause: { duration: 60s } 
         - setWeight: 100

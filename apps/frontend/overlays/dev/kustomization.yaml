@@ -4,25 +4,25 @@ namespace: frontend
 resources:
   - ../../base
 images:
-  - name: gitops-demo-frontend
+  - name: gitops-frontend
     newName: docker.io/simonangelfong/gitops-demo-frontend
-    newTag: v0.2.3
+    newTag: v0.3.1
 labels:
   - includeSelectors: false
     pairs:
-      app.kubernetes.io/instance: gitops-demo-frontend-dev
+      app.kubernetes.io/instance: gitops-frontend
       env: dev
 patches:
   - target:
       kind: HorizontalPodAutoscaler
-      name: gitops-demo-frontend
+      name: gitops-frontend
     patch: |-
       - op: replace
         path: /spec/minReplicas
-        value: 1
+        value: 4
       - op: replace
         path: /spec/maxReplicas
-        value: 2
+        value: 8
       - op: replace
         path: /spec/metrics/0/resource/target/averageUtilization
-        value: 80
+        value: 60
