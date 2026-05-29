@@ -20,6 +20,7 @@
     - [Canary Demo: Failure Rollback](#canary-demo-failure-rollback)
   - [Post-release Risk Control](#post-release-risk-control)
     - [OOM Incident Simulation](#oom-incident-simulation)
+  - [Summary](#summary)
 
 ---
 
@@ -201,3 +202,17 @@ Monitoring dashboards and incident alerts help identify abnormal behavior and su
 ![oom-demo-log](./docs/assets/oom_demo_log.png)
 
 ![oom-demo-rollback](./docs/assets/oom_demo_rollback.png)
+
+---
+
+## Summary
+
+| Phase        | Solution                      | Risk Reduced                   | Description                                       |
+| ------------ | ----------------------------- | ------------------------------ | ------------------------------------------------- |
+| Pre-release  | Separate repos                | Coordination risk across roles | Separates responsibilities with clearer ownership |
+| Pre-release  | Environment isolation         | Production-readiness risk      | Isolates `dev`,`stage`,`prod` environments        |
+| Pre-release  | CI/CD across repos & env      | Bug/security risk              | Catches issues before promotion                   |
+| Release      | Canary deployment             | Rollout risk                   | Limits blast radius of failed releases            |
+| Release      | Automated analysis / rollback | Manual response risk           | Stops unhealthy rollout faster                    |
+| Post-release | Prometheus/Grafana monitoring | Visibility risk                | Shows system health after deployment              |
+| Post-release | Alertmanager alerts           | Operation risk                 | Helps identify incidents sooner and reduce MTTR   |
