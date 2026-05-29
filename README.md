@@ -27,12 +27,12 @@
 
 **Challenge:**
 
-Every production release carries the risk of introducing <u>bugs that affect users and disrupt business operations</u>.
+Every production release carries the risk of introducing **bugs that affect users and disrupt business operations**. <br>
 How can changes be **validated early**, **released gradually**, and **monitored continuously** to reduce business impact?
 
 **Solution:**
 
-This project implements a <u>GitOps-based release risk control workflow</u> across three phases:
+This project implements a **GitOps-based release risk control workflow** across three phases:
 
 | Phase        | Project Approach                                                                                           | Goal                                              |
 | ------------ | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
@@ -87,14 +87,14 @@ This project implements a <u>GitOps-based release risk control workflow</u> acro
 
 ### Dedicated Repositories
 
-- The project separates <u>application</u>, <u>infrastructure</u>, and <u>platform</u> responsibilities into dedicated repositories.
-- This separation creates clear **ownership boundaries**, reduces **coordination risk**, and makes changes easier to review and audit.
+- The project separates **application**, **infrastructure**, and **platform** responsibilities into dedicated repositories.
+- This separation creates clear **ownership boundaries**, reduces **coordination risk**, and makes changes **easier to review and audit**.
 
-| Repository                                                                                          | Role                | Main Responsibility                                                                                                |
-| --------------------------------------------------------------------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| [Platform](https://github.com/simonangel-fong/Project_GitOps_Canary_Promotion_Platform_Repo.git)    | _Platform Engineer_ | Kubernetes add-ons, application manifests, sync waves, canary rollout configuration, monitoring, and notifications |
-| [Application](https://github.com/simonangel-fong/Project_GitOps_Canary_Promotion_App_Repo.git)      | _Software Engineer_ | Application source code, Docker image build, image push, and deployment update trigger                             |
-| [Infrastructure](https://github.com/simonangel-fong/Project_GitOps_Canary_Promotion_Infra_Repo.git) | _Cloud Engineer_    | AWS infrastructure, EKS clusters, Argo CD installation, and networking foundation                                  |
+| Repository                                                                                      | Role                | Main Responsibility                                                                                                |
+| ----------------------------------------------------------------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| [Platform](https://github.com/simonangel-fong/Project_GitOps_Risk_Control_Platform_Repo.git)    | _Platform Engineer_ | Kubernetes add-ons, application manifests, sync waves, canary rollout configuration, monitoring, and notifications |
+| [Application](https://github.com/simonangel-fong/Project_GitOps_Risk_Control_App_Repo.git)      | _Software Engineer_ | Application source code, Docker image build, image push, and deployment update trigger                             |
+| [Infrastructure](https://github.com/simonangel-fong/Project_GitOps_Risk_Control_Infra_Repo.git) | _Cloud Engineer_    | AWS infrastructure, EKS clusters, Argo CD installation, and networking foundation                                  |
 
 ---
 
@@ -113,7 +113,7 @@ This project implements a <u>GitOps-based release risk control workflow</u> acro
 
 ### Automated Promotion Pipeline
 
-- The `CI/CD pipeline` connects the separated <u>repositories</u> and <u>environments</u> into one controlled delivery flow.
+- The `CI/CD pipeline` connects the separated **repositories** and **environments** into one controlled delivery flow.
 - It validates changes, promotes manifests across environments, and keeps production promotion approval-based.
 
 | Environment | Owner & Trigger                                           | Pipeline Responsibility                                                                                        |
@@ -125,7 +125,7 @@ This project implements a <u>GitOps-based release risk control workflow</u> acro
 ![cicd-pipeline-diagram](./docs/assets/cicd_pipeline_diagram.png)
 
 - The pipeline keeps `dev` and `stage` highly automated for fast validation,
-- The `prod` requires <u>human release approval</u> to protect production stability.
+- The `prod` requires **human release approval** to protect production stability.
 
 ---
 
@@ -133,9 +133,9 @@ This project implements a <u>GitOps-based release risk control workflow</u> acro
 
 - `Release risk control` focuses on limiting production impact when a new version reaches users.
 - Instead of replacing the stable version all at once, the project uses `canary deployment`, automated rollout analysis, and GitOps-based recovery to release changes gradually and safely.
-  - <u>canary deployment</u>: shifts a small portion of production traffic to the new version before full rollout
-  - <u>automated rollout analysis</u>: evaluates rollout health before increasing traffic
-  - <u>rollback/revert strategy</u>: stops unsafe releases and restores the stable version through GitOps-based recovery
+  - **Canary Deployment**: shifts a small portion of production traffic to the new version before full rollout
+  - **Automated Rollout Analysis**: evaluates rollout health before increasing traffic
+  - **Rollback/revert Strategy**: stops unsafe releases and restores the stable version through GitOps-based recovery
 
 ```text
 New Image / Manifest Update
@@ -182,11 +182,11 @@ Monitoring dashboards and incident alerts help identify abnormal behavior and su
 
 - `Grafana dashboards`: **visualize** application and cluster health after deployment
 
-![dashboard](./docs/assets/grafana_dashboard.png)
+  ![dashboard](./docs/assets/grafana_dashboard.png)
 
 - `Alertmanager`: **notify** operators when abnormal conditions occur
 
-![slack-alert](./docs/assets/slack_alert_post_deploy.png)
+  ![slack-alert](./docs/assets/slack_alert_post_deploy.png)
 
 ---
 
