@@ -10,9 +10,8 @@
 
 - [GitOps Risk Control](#gitops-risk-control)
   - [Challenge and Solution](#challenge-and-solution)
-  - [Project Architecture](#project-architecture)
   - [Pre-release Risk Control](#pre-release-risk-control)
-    - [Dedicated Repositories](#dedicated-repositories)
+    - [Multi-Repositories](#multi-repositories)
     - [Environment Strategy](#environment-strategy)
     - [Automated Promotion Pipeline](#automated-promotion-pipeline)
   - [Release Risk Control](#release-risk-control)
@@ -43,42 +42,9 @@ This project implements a **GitOps-based release risk control workflow** across 
 
 ---
 
-## Project Architecture
+- **Architecture Diagram**
 
-- 3-repo GitOps model to separate application delivery, infrastructure provisioning, and platform configuration.
-
-```txt
-                                         End Users
-                                            |
-                                            v
-          +---------------------------------------------------------------------+
-          |                            EKS Runtime                              |
-          |                                                                     |
-          |  Applications: Frontend App, Backend App                            |
-          |                                                                     |
-          |  Platform Add-ons: ESO, Karpenter, ALBC, Envoy, ExternalDNS         |
-          |  Delivery & Observability: Argo Rollouts, Prometheus,               |
-          |  Alertmanager, Slack Notifications                                  |
-          +---------------------------------------------------------------------+
-                                            ^
-                                            |
-                  +-------------------------+-------------------------+
-                  ^                         ^                         ^
-                  |                         |                         |
-             Provisioning            Container Image         GitOps Sync / Rollout
-                  |                         |                         |
-        +---------------------+  +---------------------+   +---------------------+
-        |Infrastructure Repo  |  | Application Repo    |   | Platform Repo       |
-        |                     |  |                     |   |                     |
-        | Terraform           |  |App source code      |   | GitOps manifests    |
-        | AWS / EKS clusters  |  | Docker build        |   | App-of-Apps         |
-        | ArgoCD install      |  |  CI pipeline        |   | Add-ons / apps      |
-        +---------------------+  +---------------------+   +---------------------+
-                  ^                         ^                         ^
-                  |                         |                         |
-             Cloud Engineer              Developer            Platform Engineer
-
-```
+![arch](./docs/assets/architecture.gif)
 
 ---
 
@@ -86,7 +52,7 @@ This project implements a **GitOps-based release risk control workflow** across 
 
 `Pre-release risk control` focuses on reducing coordination issues, catching problems early, and preventing unvalidated changes from reaching production.
 
-### Dedicated Repositories
+### Multi-Repositories
 
 - The project separates **application**, **infrastructure**, and **platform** responsibilities into dedicated repositories.
 - This separation creates clear **ownership boundaries**, reduces **coordination risk**, and makes changes **easier to review and audit**.
@@ -97,18 +63,23 @@ This project implements a **GitOps-based release risk control workflow** across 
 | [Application](https://github.com/simonangel-fong/Project_GitOps_Risk_Control_App_Repo.git)      | _Software Engineer_ | Application source code, Docker image build, image push, and deployment update trigger                             |
 | [Infrastructure](https://github.com/simonangel-fong/Project_GitOps_Risk_Control_Infra_Repo.git) | _Cloud Engineer_    | AWS infrastructure, EKS clusters, Argo CD installation, and networking foundation                                  |
 
+![repo](./docs/assets/multi-repo.png)
+
 ---
 
 ### Environment Strategy
 
-- The project separates `dev`, `stage`, and `prod` environments using dedicated `Git branches`, `EKS clusters`, and `Kustomize overlays`.
-- This enables a controlled promotion path where changes can be validated progressively before reaching production.
+- Control blask radius by isolated environments by branching strategy, separated cluster, manifest, and DNS endpoint.
+- The project separates `dev`, `stage`, and `prod` environments using dedicated `Git branches`, `EKS clusters`, and `Kustomize` overlays manifests.
 
-| Environment | Branch  | Cluster        | Manifest Path     | Purpose                                   | Characteristics                        |
-| ----------- | ------- | -------------- | ----------------- | ----------------------------------------- | -------------------------------------- |
-| `dev`       | `dev`   | `gitops-dev`   | `overlays/dev/`   | Early validation for development changes  | Fast-changing and flexible             |
-| `stage`     | `stage` | `gitops-stage` | `overlays/stage/` | Production-like validation before release | Test-heavy and production-like         |
-| `prod`      | `prod`  | `gitops-prod`  | `overlays/prod/`  | Live environment for end users            | Stable, reliable, and security-focused |
+| Environment     | `dev`                                    | `stage`                                   | `prod`                                 |
+| --------------- | ---------------------------------------- | ----------------------------------------- | -------------------------------------- |
+| Branch          | `dev`                                    | `stage`                                   | `prod`                                 |
+| Cluster         | `gitops-dev`                             | `gitops-stage`                            | `gitops-prod`                          |
+| Manifest Path   | `overlays/dev/`                          | `overlays/stage/`                         | `overlays/prod/`                       |
+| DNS Endpoint    | `https://gitops-dev.domain`              | `https://gitops-stage.domain`             | `https://gitops.domain`                |
+| Purpose         | Early validation for development changes | Production-like validation before release | Live environment for end users         |
+| Characteristics | Fast-changing and flexible               | Test-heavy and production-like            | Stable, reliable, and security-focused |
 
 ---
 
@@ -127,6 +98,8 @@ This project implements a **GitOps-based release risk control workflow** across 
 
 - The pipeline keeps `dev` and `stage` highly automated for fast validation,
 - The `prod` requires **human release approval** to protect production stability.
+
+- Main CI/CD Pipeline
 
 ---
 
@@ -157,6 +130,8 @@ Promote New Version          Roll Back to Stable Version
 ↓                            ↓
 Send Slack Notification      Send Slack Notification
 ```
+
+![canary_deploy](./docs/assets/canary_deploy.gif)
 
 ---
 
